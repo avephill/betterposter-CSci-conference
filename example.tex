@@ -7,12 +7,15 @@
 %%%% https://twitter.com/mikemorrison
 
 \documentclass[a0paper,fleqn]{betterposter}
+% \usepackage{graphicx}
+% \usepackage{svg}
+\usepackage{subfigure}
 
 %%%% Uncomment the following commands to customise the format
 
 %% Setting the width of columns
 % Left column
-%\setlength{\leftbarwidth}{0.25\paperwidth}
+\setlength{\leftbarwidth}{0.25\paperwidth}
 % Right column
 %\setlength{\rightbarwidth}{0.25\paperwidth}
 
@@ -32,7 +35,7 @@
 % Main column font
 %\renewcommand{\fontsizemain}{\fontsize{28}{35} \selectfont}
 % Title font
-%\renewcommand{\fontsizetitle}{\fontsize{28}{35} \selectfont}
+\renewcommand{\fontsizetitle}{\fontsize{72}{35} \selectfont}
 % Author font
 %\renewcommand{\fontsizeauthor}{\fontsize{28}{35} \selectfont}
 % Section font
@@ -69,9 +72,10 @@
 %%%% Bottom space
 
 %% QR code
-\qrcode{img/qrcode}{img/smartphoneWhite}{
+\qrcode{img/qr-code}{img/smartphoneWhite}{
 \textbf{Take a picture} to
-\\download the full paper
+\\access the interactive report
+\\we sent to community collaborators
 }
 % Smartphone icon
 % Author: Freepik
@@ -88,15 +92,15 @@
 }{
 %%%%%%%% LEFT COLUMN
 
-\title{The Title}
-\author{Mike Morrison}
-\author{Rafael Bailo}
-\institution{Optional Institution Under Name}
+\title{Using iNaturalist to evaluate the contribution of urban landscapes to regional conservation goals}
+\author{Avery Hill}
+% \author{Rafael Bailo}
+\institution{California Academy of Sciences}
 
 \section{Introduction}
-Here is an itemised list:
+% Here is an itemised list:
 \begin{itemize}
-\item The first item.
+\item Regional conservation organizations in the San Francisco Bay Area have underappreciated the 
 \item The second item.
 \item The third item.
 \end{itemize}
@@ -122,8 +126,7 @@ This is a great poster format!
 %% This fills the space between the content and the logo
 \vfill
 
-%% Institution logo
-\includegraphics[width=\textwidth]{img/logo}\\
+
 
 }{
 %%%%%%%% RIGHT COLUMN
@@ -142,6 +145,16 @@ Some cute ducklings:
 % Author: Magda Ehlers, https://www.pexels.com/@magda-ehlers-pexels
 % Retrieved from: https://www.pexels.com/photo/selective-focus-photo-of-flock-of-ducklings-perching-on-gray-concrete-pavement-1300355/
 \includegraphics[width=\textwidth]{img/ducklings}
+\end{center}
+
+
+\vfill
+
+%% Institution logo
+\begin{center}
+
+\includegraphics[width=.8\textwidth]{img/combined_logo.eps}\\
+% \end{right}
 \end{center}
 }
 \end{document}
