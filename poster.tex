@@ -7,15 +7,16 @@
 %%%% https://twitter.com/mikemorrison
 
 \documentclass[a0paper,fleqn]{betterposter}
-% \usepackage{graphicx}
-% \usepackage{svg}
-\usepackage{subfigure}
+
+
+\usepackage{fontawesome}
+% Font awesome symbols https://mirrors.ibiblio.org/CTAN/fonts/fontawesome/doc/fontawesome.pdf
 
 %%%% Uncomment the following commands to customise the format
 
 %% Setting the width of columns
 % Left column
-\setlength{\leftbarwidth}{0.25\paperwidth}
+% \setlength{\leftbarwidth}{0.25\paperwidth}
 % Right column
 %\setlength{\rightbarwidth}{0.25\paperwidth}
 
@@ -65,9 +66,10 @@
 \maincolumn{
 %%%% Main space
 
-\textbf{Main finding} goes here,
-\\translated into \textbf{plain English}.
-\\\textbf{Emphasize} the important words.
+\textbf{Urban} areas provide \textbf{habitat}
+\\to target conservation species.
+% \\\textbf{Emphasize} the important words.
+\vfill
 }{
 %%%% Bottom space
 
@@ -81,71 +83,53 @@
 % Author: Freepik
 % Retrieved from: https://www.flaticon.com/free-icon/smartphone_65680
 
-%% Compact QR code (comment the previous command and uncomment this one to switch)
-%\compactqrcode{img/qrcode}{
-%\textbf{Take a picture} to
-%\\download the full paper
-%}
-
 }
 
 }{
 %%%%%%%% LEFT COLUMN
 
 \title{Using iNaturalist to evaluate the contribution of urban landscapes to regional conservation goals}
-\author{Avery Hill}
-% \author{Rafael Bailo}
-\institution{California Academy of Sciences}
+\author{Avery Hill$^1$, Tom Robinson$^2$, Rebecca Johnson$^1$, Alison Young$^1$}
+
+\institution{$^1$California Academy of Sciences}
+\institution{$^2$Together Bay Area}
 
 \section{Introduction}
-% Here is an itemised list:
+
+\vspace{-2cm}
 \begin{itemize}
-\item Regional conservation organizations in the San Francisco Bay Area have underappreciated the 
-\item The second item.
-\item The third item.
+\item Regional \textbf{conservation} organizations in the San Francisco Bay Area have \textbf{underappreciated} the extent to which \textbf{urban lands} provide habitat for target conservation species.
+\item The biodiversity community science platform, \textbf{iNaturalist}, demonstrates that many \textbf{target species} are \textbf{frequently observed} in urban landscapes.
+\item \textbf{Species distribution modeling} (SDM) is a powerful tool for evaluating the habitat of target species and mapping available habitat across urban areas.
 \end{itemize}
 
-\section{A Diagram}
-Here is a diagram:
+\section{Materials \& Methods}
+% We trained SDMs for X species using regional iNaturalist observations and X environmental variables.
+% \vspace{1cm}
+\def\iconspace{3mm}
+\vspace{-14mm}
+\\\faMapO   \hspace{1cm} 10 San Francisco Bay Area counties
+\vspace{\iconspace}
+\\\faClockO \hspace{1cm} 1999 - 2023
+\vspace{\iconspace}
+\\\faMapMarker \hspace{1cm} 53,000 observations across 20 species
+\vspace{\iconspace}
+\\\faSunO \hspace{1cm} 18 environmental variables at 10m
+\vspace{\iconspace}
+\\\faConnectdevelop \hspace{1cm} Maxent SDM, 5-fold cross validation
+\vspace{\iconspace}
+\\\faCode \hspace{1cm} R v4.2.2, \textit{SDMTune}, \textit{blockCV}, \textit{terra}, 
+\\ \hspace*{2.1cm} \textit{tidyverse}, \textit{CoordinateCleaner}, \textit{sf}
 \begin{center}
-% Linear regression
-% Author: Henri Menke
-% Retrieved from: http://www.texample.net/tikz/examples/linear-regression/
-\includegraphics[width=\textwidth]{img/tikzexample1}
+
+% \includegraphics[width=\textwidth]{img/tikzexample1}
 \end{center}
 
-\section{Fundamental Theorem\\of Calculus}
-If $f$ is continuous on the closed interval $[a,b]$ and $F$ is the indefinite integral of $f$ on $[a,b]$, then
-\begin{equation}
-\int_a^b f(x)\,\mathrm{d}x = F(b)-F(a).
-\end{equation}
-
-\section{Conclusion}
-This is a great poster format!
-
-%% This fills the space between the content and the logo
-\vfill
 
 
 
 }{
 %%%%%%%% RIGHT COLUMN
-
-Here you can add \textbf{supplementary material}. For instance, a new diagram:
-\begin{center}
-% Commutative diagram with edges passing under/over
-% Author: Stefan Kottwitz, http://texblog.net/
-% Retrieved from: http://www.texample.net/tikz/examples/commutative-diagram/
-\includegraphics[width=\textwidth]{img/tikzexample2}
-\end{center}
-
-Some cute ducklings:
-\begin{center}
-% Picture of ducklings
-% Author: Magda Ehlers, https://www.pexels.com/@magda-ehlers-pexels
-% Retrieved from: https://www.pexels.com/photo/selective-focus-photo-of-flock-of-ducklings-perching-on-gray-concrete-pavement-1300355/
-\includegraphics[width=\textwidth]{img/ducklings}
-\end{center}
 
 
 \vfill
