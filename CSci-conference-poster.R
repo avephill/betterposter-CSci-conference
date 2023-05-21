@@ -275,7 +275,7 @@ specrich.g <- ggplot() +
     theme_void()
 
 ggsave("img/species_richness.png", specrich.g,
-       width = 10, height = 15 dpi = 300, units = "in")
+       width = 10, height = 25 dpi = 300, units = "in")
 
 knitr::plot_crop("img/species_richness.png")
 
@@ -296,7 +296,8 @@ sum.df <- read_csv("../together-bay-area/SDM-Report-1/data/sdm/sdm_sum.csv") %>%
 #            str_replace(spec, " ", "-"),'" target="_blank">', spec, "</a>")
 # }
 
-sum.df %>% 
+spec_tab.gt <- 
+    sum.df %>% 
     # select(-`Most Imp. Variables`) %>% 
     gt(rowname_col = "Species") %>% 
     # tab_header(title = "Quick SDM metrics by species") %>%
@@ -309,6 +310,5 @@ sum.df %>%
                      columns = Species
                  ))
 
-ggsave("img/species_table.png",
-       # full.plot,
-       dpi = 300, height = 8)
+gtsave(spec_tab.gt,
+       "img/species_table.tex")
