@@ -97,7 +97,7 @@ bay_base.g +
           legend.title = element_blank())
     
 
-ggsave("../results/figures/urbancln.png", dpi = 300, width = 8, height = 8)
+ggsave("img/urbancln.png", dpi = 300, width = 8, height = 8)
 ggsave("img/urbancln.eps", dpi = 300, width = 8, height = 8, device = cairo_ps)
 
 
