@@ -90,15 +90,16 @@ bay_base.g +
     geom_sf(data = cln_cons.sf, aes(fill="darkgoldenrod1"), color = NA, alpha = .7) +
     geom_sf(data = urban.sf, aes(fill = "steelblue"), color = "steelblue", alpha = .3) +
     scale_fill_identity(breaks = c("darkgoldenrod1", "steelblue"), 
-                        labels = c("Regions of Conservation Value", "Urban Lands"), 
+                        labels = c("Regions of \nConservation Value", "Urban Lands"), 
                         guide = "legend")+
-    theme(legend.text = element_text(face = "bold"),
+    theme(legend.text = element_text(face = "bold", size = 32),
           legend.position = c(.25,.25),
+          panel.border = element_rect(colour = "white", fill=NA, linewidth=5),
           legend.title = element_blank())
     
 
 ggsave("img/urbancln.png", dpi = 300, width = 8, height = 8)
-ggsave("img/urbancln.eps", dpi = 300, width = 8, height = 8, device = cairo_ps)
+# ggsave("img/urbancln.eps", dpi = 300, width = 8, height = 8, device = cairo_ps)
 
 
 full.plot <- bay_base.g + 
