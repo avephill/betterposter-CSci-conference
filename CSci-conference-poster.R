@@ -272,11 +272,11 @@ specrich.g <- ggplot() +
                          labels = c("Urban Lands"),
                          guide = "legend",
                          name = "") +
-    theme(legend.position = "bottom") +
-    theme_void()
+    theme_void() +
+    theme(legend.position="bottom") 
 
 ggsave("img/species_richness.png", specrich.g,
-       width = 10, height = 25, dpi = 600, units = "in")
+       width = 10, height = 25, dpi = 800, units = "in")
 
 knitr::plot_crop("img/species_richness.png")
 
