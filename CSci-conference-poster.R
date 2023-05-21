@@ -251,7 +251,7 @@ pal <- colorNumeric(trans_colors,
 #           panel.border = element_rect(colour = "white", fill = NA, linewidth = 5),
 #           legend.title = element_blank())
 
-ggplot() +
+specrich.g <- ggplot() +
     geom_stars(data = specrich.strs, aes(fill = species_richness.tif)) +
     geom_sf(data = urban.sf, aes(color = "white"), fill = NA) +
     scale_fill_gradient2(low = "white",
@@ -274,7 +274,8 @@ ggplot() +
                          name = "")+
     theme_void()
 
-ggsave("img/species_richness.png", height = 20, width = 10, dpi = 300)
+ggsave("img/species_richness.png", specrich.g,
+       height = 20, width = 10, dpi = 300)
 
 
 
