@@ -275,9 +275,9 @@ specrich.g <- ggplot() +
     theme_void()
 
 ggsave("img/species_richness.png", specrich.g,
-       height = 20, width = 10, dpi = 300)
+       width = 10, height = 15 dpi = 300, units = "in")
 
-
+knitr::plot_crop("img/species_richness.png")
 
 # Tables ------------------------------------------------------------------
 # library(taxize)
