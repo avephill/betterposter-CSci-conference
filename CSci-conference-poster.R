@@ -1,6 +1,12 @@
+#' Produce materials and figures for the CUB CSci conference.
+#' Also included is calculation of MaxTSS thresholds and binary thresholding
+#' of SDMs
+
 library(sf)
 library(terra)
 library(tidyverse)
+library(gt)
+library(stars)
 
 
 results.dir <- "../results/sdm/run6_addHI/"
@@ -96,7 +102,7 @@ bay_base.g +
           legend.position = c(.25,.25),
           panel.border = element_rect(colour = "white", fill=NA, linewidth=5),
           legend.title = element_blank())
-    
+
 
 ggsave("img/urbancln.png", dpi = 300, width = 8, height = 8)
 # ggsave("img/urbancln.eps", dpi = 300, width = 8, height = 8, device = cairo_ps)
@@ -105,8 +111,203 @@ ggsave("img/urbancln.png", dpi = 300, width = 8, height = 8)
 full.plot <- bay_base.g + 
     geom_sf(data = cln_cons.sf, fill="darkgoldenrod1") +
     geom_sf(data = urban.sf, fill = "steelblue", color = NA) #+
-    # geom_sf(data = inat24.sf %>% filter(coordinateuncertaintyinmeters < 500))
+# geom_sf(data = inat24.sf %>% filter(coordinateuncertaintyinmeters < 500))
 
 ggsave("../results/figures/baybase4.png",
        full.plot,
        dpi = 300, width = 8, height = 8)
+
+
+
+
+# Main Plot ---------------------------------------------------------------
+library(SDMtune)
+library(maxnet)
+library(furrr)
+
+# Get SDM fps
+results.dir <- "../results/sdm/run6_addHI/"
+spec.dirs <- list.dirs(results.dir, recursive = T, full.names = T)[-1]
+
+# Just get dirs with all the sdm stuff in it
+full_dirs <- 
+    map(spec.dirs, 
+        function(x){
+            fnames <- list.files(x)
+            targetfiles <- fnames %>% str_subset("prediction.tif|sdm_model.rds|var_imp.csv")
+            if(length(targetfiles) == 3){
+                return(x)
+            }
+        }) %>% 
+    unlist()
+
+
+
+# Get thresholds for each model
+plan(multisession, workers = 5)
+threshes.df <- 
+    future_map(full_dirs, 
+               function(fp){
+                   library(maxnet)
+                   model <- readRDS(paste0(fp, "/sdm_model.rds"))
+                   cv.folds <- model@models %>% length()
+                   spec_name <- model@models[[1]]@data@species
+                   
+                   # Get maxTSS thresh from each fold and just average
+                   avg_thresh <- map(1:cv.folds, function(x){
+                       threshes <- SDMtune::thresholds(model@models[[x]], type = "cloglog")
+                       threshes %>% 
+                           filter(Threshold == "Maximum training sensitivity plus specificity") %>% 
+                           select(`Cloglog value`)
+                   }) %>% unlist() %>% mean()
+                   
+                   df <- tibble(
+                       Species = spec_name,
+                       `MaxTSS Cloglog Thresh` = avg_thresh)
+                   
+                   return(df)
+               }) %>% bind_rows()
+
+
+
+# Make all previous predictions binary and then put them in a list
+binary_predictions <- 
+    future_map(full_dirs, 
+               function(fp){
+                   prediction.sr <- rast(paste0(fp, "/prediction.tif"))
+                   
+                   # Get spec name
+                   fp_broken <- ( fp %>% str_split_1("/") )
+                   spec_name <- fp_broken[length(fp_broken)] %>% str_replace("_", " ")
+                   
+                   # Get thresh
+                   thrsh <- threshes.df %>% 
+                       filter(Species == spec_name) %>% 
+                       pull(`MaxTSS Cloglog Thresh`)
+                   
+                   reclass.m <- 
+                       c(-Inf, thrsh, 0,
+                         thrsh, Inf, 1) %>% 
+                       matrix(ncol = 3, byrow = T)
+                   
+                   prediction_bin.sr <- classify(prediction.sr, reclass.m)
+                   names(prediction_bin.sr) <- spec_name
+                   
+                   return(wrap(prediction_bin.sr))
+               })
+
+# Concatenate species predictions into a raster
+binary_pred.sr <- rast()
+for(pred in binary_predictions){
+    binary_pred.sr <- c(binary_pred.sr, unwrap(pred))
+}
+
+# Add up observations
+spec_rich.sr <- app(binary_pred.sr, sum, cores = 5)
+names(spec_rich.sr) <- "Species Richness"
+
+writeRaster(spec_rich.sr, 
+            "../results/sdm/run6_addHI/species_richness.tif",
+            overwrite = T)
+
+
+
+# Now actually plot it
+specrich.strs <- 
+    read_stars("../results/sdm/run6_addHI/species_richness.tif") %>% 
+    st_downsample(10) %>% 
+    st_transform(3857)
+
+
+
+pred_values <- specrich.strs %>% pull(1)  %>% as.numeric() %>% unique() %>% na.omit() %>% as.numeric()
+# pred.values <- pred.sr %>% values() %>% na.omit() %>% as.numeric()
+trans_colors <- colorRampPalette(
+    colors = c("midnightblue", "chartreuse")
+    # colors = c("chartreuse","midnightblue")
+)(30)
+
+pal <- colorNumeric(trans_colors,
+                    domain = range(pred_values),
+                    na.color = "#00000000")
+# 
+#     addStarsImage(colors = trans_colors) %>%
+#     addLegend("bottomright", pal = pal,
+#               # values = seq(1,0, by = -.1) ,
+#               values = seq(0,1, by = .1) ,
+#               title = "Habitat Suitability",
+#               opacity = 1) %>% 
+
+# bay_base.g +
+# ggplot() +
+#     geom_stars(data = specrich.strs) +
+#     # geom_sf(data = cln_cons.sf, aes(color = "darkgoldenrod1"), fill = NA) +
+#     geom_sf(data = urban.sf, aes(color = "white"), fill = NA) +
+#     scale_color_identity(breaks = c("darkgoldenrod1", "steelblue"), 
+#                          labels = c("Regions of \nConservation Value", "Urban Lands"), 
+#                          guide = "legend")+
+#     theme(legend.text = element_text(face = "bold", size = 32),
+#           legend.position = c(.25,.25),
+#           panel.border = element_rect(colour = "white", fill = NA, linewidth = 5),
+#           legend.title = element_blank())
+
+ggplot() +
+    geom_stars(data = specrich.strs, aes(fill = species_richness.tif)) +
+    geom_sf(data = urban.sf, aes(color = "white"), fill = NA) +
+    scale_fill_gradient2(low = "white",
+                         mid = "palegreen",
+                         high = "forestgreen",
+                         midpoint = 10,
+                         aesthetics = "fill",
+                         name = "Predicted Species Richness") +
+    # scale_fill_steps(
+    #     low = "#132B43",
+    #     high = "#56B1F7",
+    #     space = "Lab",
+    #     na.value = "grey50",
+    #     guide = "coloursteps",
+    #     aesthetics = "fill"
+    # ) +
+    scale_color_identity(breaks = c("white"),
+                         labels = c("Urban Lands"),
+                         guide = "legend",
+                         name = "")+
+    theme_void()
+
+ggsave("img/species_richness.png", height = 20, width = 10, dpi = 300)
+
+
+
+# Tables ------------------------------------------------------------------
+# library(taxize)
+# Species Table
+
+sum.df <- read_csv("../together-bay-area/SDM-Report-1/data/sdm/sdm_sum.csv") %>% 
+    mutate(AUC = round(AUC, 2),
+           TSS = round(TSS, 2),
+           `Most Imp. Variables` = `Most Imp. Variables` %>% str_replace_all("_", " "))
+
+# uids <- get_uid(sum.df$Species)
+# common <- sci2comm(uids, db = "ncbi")
+
+# make_hyperlink <- function(spec) {
+#     paste0('<a href="https://www.inaturalist.org/taxa/',
+#            str_replace(spec, " ", "-"),'" target="_blank">', spec, "</a>")
+# }
+
+sum.df %>% 
+    # select(-`Most Imp. Variables`) %>% 
+    gt(rowname_col = "Species") %>% 
+    # tab_header(title = "Quick SDM metrics by species") %>%
+    tab_style(
+        style = cell_text(style = "italic"),
+        locations = cells_stub()
+    ) %>% 
+    tab_footnote(footnote = "Each species name is hyperlinked to an iNaturalist page (some links may be broken)",
+                 locations = cells_column_labels(
+                     columns = Species
+                 ))
+
+ggsave("img/species_table.png",
+       # full.plot,
+       dpi = 300, height = 8)
