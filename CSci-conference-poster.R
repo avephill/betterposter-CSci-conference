@@ -275,7 +275,7 @@ specrich.g <- ggplot() +
     theme_void()
 
 ggsave("img/species_richness.png", specrich.g,
-       width = 10, height = 25 dpi = 300, units = "in")
+       width = 10, height = 25, dpi = 300, units = "in")
 
 knitr::plot_crop("img/species_richness.png")
 
