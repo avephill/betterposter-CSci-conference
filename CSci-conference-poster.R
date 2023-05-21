@@ -276,9 +276,13 @@ specrich.g <- ggplot() +
     theme(legend.position="bottom") 
 
 ggsave("img/species_richness.png", specrich.g,
-       width = 10, height = 25, dpi = 800, units = "in")
+       width = 18, height = 25, dpi = 800, units = "in")
 
-knitr::plot_crop("img/species_richness.png")
+ggsave("img/species_richness.eps", device = cairo_ps)
+
+
+# system('convert /home/ahill/Projects/together-bay-area/CUB-poster/img/species_richness.png -trim /home/ahill/Projects/together-bay-area/CUB-poster/img/species_richness.png')
+# knitr::plot_crop("img/species_richness.png")
 
 # Tables ------------------------------------------------------------------
 # library(taxize)
