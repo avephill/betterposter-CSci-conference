@@ -94,8 +94,8 @@ bay_base.g <-
 
 text_color <- "white"
 
-cln_color <- "#F9CB40" #"#B1D8B7"
-urb_color <- "#6C91C2"
+cln_color <- "#EAF7CF" #"#F9CB40" #"#B1D8B7"
+urb_color <- "#C17C74" #"#6C91C2"
 
 urbancln.g <- 
     bay_base.g + 
@@ -252,8 +252,8 @@ specrich.g <- ggplot() +
     #                      name = "") +
     theme_void() +
     theme(legend.position=c(.2, .3),
-          legend.text = element_text(face = "bold", size = 28, color = text_color),
-          legend.title = element_text(size = 32, face = "bold", color = text_color),
+          legend.text = element_text(face = "bold", size = 30, color = text_color),
+          legend.title = element_text(size = 36, face = "bold", color = text_color),
           legend.key.size = unit(3, "line")#,
           # legend.spacing.y = unit(2, "cm"),
           # legend.margin = margin(1,1,1,1, "cm")
@@ -358,7 +358,7 @@ varimp_processed.df <-
 
 varimp.plot <- ggplot(varimp_processed.df, aes(fct_reorder(Variable, mean, .desc = F), 
                                                mean)) +
-    geom_col(fill = "#6C91C2") +
+    geom_col(fill = "#C17C74") +
     # geom_errorbar(aes(ymin = sd_low, 
     #                   ymax = sd_hi),
     #               width = .2) +
