@@ -257,8 +257,8 @@ specrich.g <- ggplot() +
           legend.key.size = unit(3, "line")#,
           # legend.spacing.y = unit(2, "cm"),
           # legend.margin = margin(1,1,1,1, "cm")
-          ) +
-    guides(fill = guide_legend(byrow = TRUE))
+          ) #+
+    # guides(fill = guide_legend(byrow = TRUE))
 
 
 # wid <- 7
