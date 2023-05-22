@@ -96,7 +96,7 @@ bay_base.g +
     geom_sf(data = cln_cons.sf, aes(fill="darkgoldenrod1"), color = NA, alpha = .7) +
     geom_sf(data = urban.sf, aes(fill = "steelblue"), color = "steelblue", alpha = .3) +
     scale_fill_identity(breaks = c("darkgoldenrod1", "steelblue"), 
-                        labels = c("Regions of \nConservation Value", "Urban Lands"), 
+                        labels = c("Regions of\nConservation\nValue", "Urban Lands"), 
                         guide = "legend")+
     theme(legend.text = element_text(face = "bold", size = 28
                                      ),
@@ -280,7 +280,8 @@ ggsave("img/species_richness.png", specrich.g,
        width = 18, height = 25, dpi = 800, units = "in")
 
 ggsave("img/species_richness.eps", #width = 7.2, 
-       height = 10, 
+       specrich.g,
+       height = 5, 
        units = "in",
        device = cairo_ps)
 
