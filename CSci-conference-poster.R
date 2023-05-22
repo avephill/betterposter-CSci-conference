@@ -94,7 +94,7 @@ bay_base.g <-
 
 text_color <- "white"
 
-cln_color <- "#EAF7CF" #"#F9CB40" #"#B1D8B7"
+cln_color <- "#D8E2DC" #"#EAF7CF" #"#F9CB40" #"#B1D8B7"
 urb_color <- "#C17C74" #"#6C91C2"
 
 urbancln.g <- 
@@ -358,7 +358,7 @@ varimp_processed.df <-
 
 varimp.plot <- ggplot(varimp_processed.df, aes(fct_reorder(Variable, mean, .desc = F), 
                                                mean)) +
-    geom_col(fill = "#C17C74") +
+    geom_col(fill = "#6C91C2") + #"#C17C74") +
     # geom_errorbar(aes(ymin = sd_low, 
     #                   ymax = sd_hi),
     #               width = .2) +
