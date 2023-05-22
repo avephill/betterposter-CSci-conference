@@ -12,6 +12,7 @@
 \usepackage{amsmath, booktabs, caption, longtable}
 
 \usepackage{fontawesome}
+
 % Font awesome symbols https://mirrors.ibiblio.org/CTAN/fonts/fontawesome/doc/fontawesome.pdf
 
 %%%% Uncomment the following commands to customise the format
@@ -34,9 +35,9 @@
 
 %% Changing font sizes
 % Text font
-%\renewcommand{\fontsizestandard}{\fontsize{28}{35} \selectfont}
+% \renewcommand{\fontsizestandard}{\fontsize{35}{35} \selectfont}
 % Main column font
-%\renewcommand{\fontsizemain}{\fontsize{28}{35} \selectfont}
+\renewcommand{\fontsizemain}{\fontsize{115}{150} \selectfont}
 % Title font
 \renewcommand{\fontsizetitle}{\fontsize{72}{35} \selectfont}
 % Author font
@@ -67,13 +68,13 @@
 
 \maincolumn{
 %%%% Main space
-
-% \textbf{Urban} areas provide \textbf{habitat}
-% \\to target conservation species.
+\vspace{-2in}
+\textbf{iNaturalist} data informs \\regional \textbf{conservation} strategy
+\vspace{2in}
 
 % \includegraphics[width=.3\textwidth]{img/urbancln.eps}
 \includegraphics[width=.3\textwidth]{img/urbancln.png}
-\includegraphics[width=.7\textwidth]{img/species_richness.png}
+\includegraphics[width=.6\textwidth]{img/species_richness.eps}
 % \\\textbf{Emphasize} the important words.
 \vfill
 }{
@@ -112,6 +113,7 @@
 \section{Materials \& Methods}
 % We trained SDMs for X species using regional iNaturalist observations and X environmental variables.
 % \vspace{1cm}
+% \fontsize{15}{15}
 \def\iconspace{3mm}
 \vspace{-14mm}
 \\\faMapO   \hspace{1cm} 10 San Francisco Bay Area counties
@@ -139,8 +141,17 @@
 \section{Results}
 
 Species Table
-% \includegraphics[width=\textwidth]{img/species_table.png}
+\begingroup % localize the following settings                                                                    
+% \setlength\tabcolsep{2pt}
+% \footnotesize
+% \fontsize{10}{10}
+\large
+% \setlength\LTcapwidth{\textwidth} % default: 4in (rather less than \textwidth...)      
+
+% \setlength\LTleft{0pt}            % default: \fill
+% \setlength\LTright{0pt}           % default: \fill
 \input{img/species_table} 
+\endgroup
 Predictor Table
 
 
