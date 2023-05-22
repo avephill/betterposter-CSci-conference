@@ -99,8 +99,8 @@ urb_color <- "#6C91C2"
 
 urbancln.g <- 
     bay_base.g + 
-    geom_sf(data = cln_cons.sf, aes(fill=cln_color), color = NA, alpha = .7) +
-    geom_sf(data = urban.sf, aes(fill = urb_color), color = urb_color, alpha = .3) +
+    geom_sf(data = cln_cons.sf, aes(fill=cln_color), color = NA, alpha = 1) +
+    geom_sf(data = urban.sf, aes(fill = urb_color), color = urb_color, alpha = 1) +
     scale_fill_identity(breaks = c(cln_color, urb_color), 
                         labels = c("Recognized\nConservation\nValue", "Urban Lands"), 
                         guide = "legend")+
@@ -248,14 +248,14 @@ specrich.g <- ggplot() +
     # geom_stars(data = specrich.strs, aes(fill = species_richness.tif)) +
     geom_sf(data = specrich.sf, aes(fill = species_richness.tif), 
             color = NA, lwd = 0) +
-    geom_sf(data = urban.sf, aes(color = "white"), fill = NA, lwd = 4) +
-    scale_fill_gradient(low = "#FFEAEE",
-                         # mid = "palegreen",
-                         high = "2F5233",
-                         # midpoint = 10,
+    geom_sf(data = urban.sf, aes(color = urb_color), fill = NA, lwd = 2) +
+    scale_fill_gradient2(low = "#FFEAEE",
+                         mid = "#828F7E",
+                         high = "#2F5233",
+                         midpoint = 10,
                          aesthetics = "fill",
                          name = "Estimated Count\nof Species with\nConservation Value") +
-    scale_color_identity(breaks = c("#6C91C2"),
+    scale_color_identity(breaks = c(urb_color),
                          labels = c("Urban Lands"),
                          guide = "legend",
                          name = "") +
@@ -264,7 +264,8 @@ specrich.g <- ggplot() +
           legend.text = element_text(face = "bold", size = 28, color = text_color),
           legend.title = element_text(size = 32, face = "bold", color = text_color),
           legend.key.size = unit(3, "line"),
-          legend.spacing.y = unit(2, "cm")) +
+          # legend.spacing.y = unit(2, "cm"),
+          legend.margin = margin(1,1,1,1, "cm")) +
     guides(fill = guide_legend(byrow = TRUE))
 
 
