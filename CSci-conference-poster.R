@@ -98,24 +98,25 @@ bay_base.g +
     scale_fill_identity(breaks = c("darkgoldenrod1", "steelblue"), 
                         labels = c("Regions of \nConservation Value", "Urban Lands"), 
                         guide = "legend")+
-    theme(legend.text = element_text(face = "bold", size = 32),
+    theme(legend.text = element_text(face = "bold", size = 28
+                                     ),
           legend.position = c(.25,.25),
           panel.border = element_rect(colour = "white", fill=NA, linewidth=5),
           legend.title = element_blank())
 
 
-ggsave("img/urbancln.png", dpi = 300, width = 8, height = 8)
+ggsave("img/urbancln.png", dpi = 300, width = 10, height = 10)
 # ggsave("img/urbancln.eps", dpi = 300, width = 8, height = 8, device = cairo_ps)
 
 
-full.plot <- bay_base.g + 
-    geom_sf(data = cln_cons.sf, fill="darkgoldenrod1") +
-    geom_sf(data = urban.sf, fill = "steelblue", color = NA) #+
-# geom_sf(data = inat24.sf %>% filter(coordinateuncertaintyinmeters < 500))
-
-ggsave("../results/figures/baybase4.png",
-       full.plot,
-       dpi = 300, width = 8, height = 8)
+# full.plot <- bay_base.g + 
+#     geom_sf(data = cln_cons.sf, fill="darkgoldenrod1") +
+#     geom_sf(data = urban.sf, fill = "steelblue", color = NA) #+
+# # geom_sf(data = inat24.sf %>% filter(coordinateuncertaintyinmeters < 500))
+# 
+# ggsave("../results/figures/baybase4.png",
+#        full.plot,
+#        dpi = 300, width = 8, height = 8)
 
 
 
@@ -278,7 +279,8 @@ specrich.g <- ggplot() +
 ggsave("img/species_richness.png", specrich.g,
        width = 18, height = 25, dpi = 800, units = "in")
 
-ggsave("img/species_richness.eps", width = 18, height = 25, 
+ggsave("img/species_richness.eps", #width = 7.2, 
+       height = 10, 
        units = "in",
        device = cairo_ps)
 
