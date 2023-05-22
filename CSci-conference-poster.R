@@ -94,7 +94,7 @@ bay_base.g <-
 
 text_color <- "white"
 
-cln_color <- "#B1D8B7"
+cln_color <- "#F9CB40" #"#B1D8B7"
 urb_color <- "#6C91C2"
 
 urbancln.g <- 
@@ -233,39 +233,31 @@ specrich.strs <-
 
 
 
-pred_values <- specrich.strs %>% pull(1)  %>% as.numeric() %>% unique() %>% na.omit() %>% as.numeric()
-# pred.values <- pred.sr %>% values() %>% na.omit() %>% as.numeric()
-trans_colors <- colorRampPalette(
-    colors = c("midnightblue", "chartreuse")
-    # colors = c("chartreuse","midnightblue")
-)(30)
-
-
-
 specrich.sf <- specrich.strs %>% st_as_sf()
 
 specrich.g <- ggplot() +
     # geom_stars(data = specrich.strs, aes(fill = species_richness.tif)) +
     geom_sf(data = specrich.sf, aes(fill = species_richness.tif), 
             color = NA, lwd = 0) +
-    geom_sf(data = urban.sf, aes(color = urb_color), fill = NA, lwd = 2) +
+    # geom_sf(data = urban.sf, aes(color = urb_color), fill = NA, lwd = 2) +
     scale_fill_gradient2(low = "#FFEAEE",
                          mid = "#828F7E",
                          high = "#2F5233",
                          midpoint = 10,
                          aesthetics = "fill",
                          name = "Estimated Count\nof Species with\nConservation Value") +
-    scale_color_identity(breaks = c(urb_color),
-                         labels = c("Urban Lands"),
-                         guide = "legend",
-                         name = "") +
+    # scale_color_identity(breaks = c(urb_color),
+    #                      labels = c("Urban Lands"),
+    #                      guide = "legend",
+    #                      name = "") +
     theme_void() +
     theme(legend.position=c(.2, .3),
           legend.text = element_text(face = "bold", size = 28, color = text_color),
           legend.title = element_text(size = 32, face = "bold", color = text_color),
-          legend.key.size = unit(3, "line"),
+          legend.key.size = unit(3, "line")#,
           # legend.spacing.y = unit(2, "cm"),
-          legend.margin = margin(1,1,1,1, "cm")) +
+          # legend.margin = margin(1,1,1,1, "cm")
+          ) +
     guides(fill = guide_legend(byrow = TRUE))
 
 
@@ -372,6 +364,7 @@ varimp.plot <- ggplot(varimp_processed.df, aes(fct_reorder(Variable, mean, .desc
     #               width = .2) +
     labs(x = "", y = "") +
     # labs(x = "", y = "Relative Variable Importance") +
+    scale_y_continuous(position = "right") +
     
     coord_flip() +
     theme_minimal() +
