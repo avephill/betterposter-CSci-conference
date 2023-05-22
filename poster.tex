@@ -13,6 +13,11 @@
 
 \usepackage{fontawesome}
 
+% For custom lists
+\renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}}
+\renewcommand{\labelenumiii}{\arabic{enumi}.\arabic{enumii}.\arabic{enumiii}}
+\renewcommand{\labelenumiv}{\arabic{enumi}.\arabic{enumii}.\arabic{enumiii}.\arabic{enumiv}}
+
 % Font awesome symbols https://mirrors.ibiblio.org/CTAN/fonts/fontawesome/doc/fontawesome.pdf
 
 %%%% Uncomment the following commands to customise the format
@@ -39,9 +44,9 @@
 % Main column font
 \renewcommand{\fontsizemain}{\fontsize{115}{150} \selectfont}
 % Title font
-\renewcommand{\fontsizetitle}{\fontsize{72}{35} \selectfont}
+% \renewcommand{\fontsizetitle}{\fontsize{68}{150} \selectfont}
 % Author font
-%\renewcommand{\fontsizeauthor}{\fontsize{28}{35} \selectfont}
+\renewcommand{\fontsizeauthor}{\fontsize{40}{50} \selectfont}
 % Section font
 %\renewcommand{\fontsizesection}{\fontsize{28}{35} \selectfont}
 
@@ -70,7 +75,7 @@
 %%%% Main space
 \vspace{-1in}
 \textbf{iNaturalist} data informs \\regional \textbf{conservation} strategy
-\vspace{2in}
+\vspace{-3in}
 
 
 % \begin{figure}[!tbp]
@@ -80,7 +85,7 @@
   \end{minipage}
   \hfill
   \begin{minipage}[c]{0.65\textwidth}
-  \vspace{5cm}
+  \vspace{9in}
     % \includegraphics[width=\textwidth]{img/species_richness.png}
     \includegraphics[width=\textwidth]{img/species_richness.eps}
   \end{minipage}
@@ -95,10 +100,10 @@
 %%%% Bottom space
 
 %% QR code
-\vspace{15cm}
+\vspace{-4in}
 \qrcode{img/qr-code}{img/smartphoneWhite}{
-\textbf{Take a picture} to
-\\access the interactive report
+\textbf{Scan the QR code} to
+\\view the interactive report
 \\we sent to community collaborators
 }
 % Smartphone icon
@@ -126,30 +131,48 @@
 \item \textbf{Species distribution modeling} (SDM) is a powerful tool for evaluating the habitat of target species and mapping available habitat across urban areas.
 \end{itemize}
 
-\section{Materials \& Methods}
+\section{Materials}
 % We trained SDMs for X species using regional iNaturalist observations and X environmental variables.
 % \vspace{1cm}
 % \fontsize{15}{15}
-\def\iconspace{3mm}
-\vspace{-14mm}
+\def\iconspace{2mm}
+\vspace{-15mm}
 \\\faMapO   \hspace{1cm} 10 San Francisco Bay Area counties
 \vspace{\iconspace}
 \\\faClockO \hspace{1cm} 1999 - 2023
 \vspace{\iconspace}
-\\\faMapMarker \hspace{1cm} 53,000 observations across 18 species
+\\\faMapMarker \hspace{1.3cm} 53,000 iNaturalist observations
 \vspace{\iconspace}
-\\\faSunO \hspace{1cm} 18 environmental variables at 10m
+\\\faLeaf \hspace{1.3cm} 18 species of conservation value
 \vspace{\iconspace}
-\\\faConnectdevelop \hspace{1cm} Maxent SDM, 5-fold cross validation
+\\\faSunO \hspace{.9cm} 18 environmental variables at 10m
+% \vspace{\iconspace}
+% \\\faConnectdevelop \hspace{1cm} Maxent SDM, 5-fold cross validation
 \vspace{\iconspace}
 \\\faCode \hspace{1cm} R v4.2.2, \textit{SDMTune}, \textit{blockCV}, \textit{terra}, 
 \\ \hspace*{2.1cm} \textit{tidyverse}, \textit{CoordinateCleaner}, \textit{sf}
-\begin{center}
+% \begin{center}
 
-1. Process 
 
-% \includegraphics[width=\textwidth]{img/tikzexample1}
-\end{center}
+\section{Methods}
+% % \includegraphics[width=\textwidth]{img/tikzexample1}
+% \end{center}
+\vspace{-15mm}
+% {\fontsize{31}{45} \selectfont
+\begin{enumerate}
+    \item Prepare source data
+    % \begin{enumerate}
+    %     \item Clean iNaturalist observations
+    %     \item Standardize environmental variables 
+    % \end{enumerate}
+    \item Train MaxEnt SDM for each species
+    % \begin{enumerate}
+    %     \item Separate train and test sets
+    % \end{enumerate}
+    \item Validate models with local experts
+    \item Identify important habitat for target species
+\end{enumerate}
+% }
 
 
 
@@ -158,12 +181,12 @@
 %%%%%%%% RIGHT COLUMN
 \section{Results}
 
-Species Table
+Species with SDM Accuracy Metrics
 \begingroup % localize the following settings                                                                    
 % \setlength\tabcolsep{2pt}
 % \footnotesize
 % \fontsize{10}{10}
-\large
+\huge
 % \centering
 % \setlength\LTcapwidth{\textwidth} % default: 4in (rather less than \textwidth...)      
 
