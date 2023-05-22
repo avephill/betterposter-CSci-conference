@@ -32,7 +32,7 @@ predictor.stack %>% names() %>%  length()
 
 # Main Map ----------------------------------------------------------------
 
-library(basemaps)
+# library(basemaps)
 
 study.sf <- st_read("../data/study_area.gpkg") %>% st_transform(crs= 3857)
 urban.sf <- st_read("../data/urban_area.gpkg") %>% st_transform(crs= 3857)
@@ -92,6 +92,8 @@ bay_base.g <-
 
 # ggsave("../results/figures/baybase2.png",dpi = 300, width = 8, height = 8)
 
+text_color <- "white"
+
 urbancln.g <- 
     bay_base.g + 
     geom_sf(data = cln_cons.sf, aes(fill="darkgoldenrod1"), color = NA, alpha = .7) +
@@ -99,7 +101,7 @@ urbancln.g <-
     scale_fill_identity(breaks = c("darkgoldenrod1", "steelblue"), 
                         labels = c("Regions of\nConservation\nValue", "Urban Lands"), 
                         guide = "legend")+
-    theme(legend.text = element_text(face = "bold", size = 28, color = "white"),
+    theme(legend.text = element_text(face = "bold", size = 28, color = text_color),
           legend.position = c(.2,.25),
           legend.spacing.y = unit(.25, 'in'),
           panel.border = element_rect(colour = "white", fill=NA, linewidth=5),
@@ -240,8 +242,9 @@ trans_colors <- colorRampPalette(
 specrich.sf <- specrich.strs %>% st_as_sf()
 
 specrich.g <- ggplot() +
-    geom_stars(data = specrich.strs, aes(fill = species_richness.tif)) +
-    # geom_sf(data = specrich.sf, aes(fill = species_richness.tif, color = species_richness.tif)) +
+    # geom_stars(data = specrich.strs, aes(fill = species_richness.tif)) +
+    geom_sf(data = specrich.sf, aes(fill = species_richness.tif), 
+            color = NA, lwd = 0) +
     geom_sf(data = urban.sf, aes(color = "white"), fill = NA) +
     scale_fill_gradient2(low = "white",
                          mid = "palegreen",
@@ -249,15 +252,20 @@ specrich.g <- ggplot() +
                          midpoint = 10,
                          aesthetics = "fill",
                          name = "Predicted\nSpecies Count") +
-
+    # scale_color_gradient2(low = "white",
+    #                      mid = "palegreen",
+    #                      high = "forestgreen",
+    #                      midpoint = 10,
+    #                      aesthetics = "fill",
+    #                      name = "Predicted\nSpecies Count") +
     scale_color_identity(breaks = c("white"),
                          labels = c("Urban Lands"),
                          guide = "legend",
                          name = "") +
     theme_void() +
     theme(legend.position=c(.2, .3),
-          legend.text = element_text(face = "bold", size = 28, color = "white"),
-          legend.title = element_text(size = 32, face = "bold"),
+          legend.text = element_text(face = "bold", size = 28, color = text_color),
+          legend.title = element_text(size = 32, face = "bold", color = text_color),
           legend.key.size = unit(3, "line")) 
 
 
@@ -273,12 +281,12 @@ height <- 20
 ggsave("img/species_richness.png", specrich.g,
        width = height * asp_rat, height = height, dpi = 300, units = "in")
 
-# ggsave("img/species_richness.eps", #width = 7.2, 
-#        specrich.g,
-#        height = hei,
-#        width = wid,
-#        units = "in",
-#        device = cairo_ps)
+ggsave("img/species_richness.eps", #width = 7.2,
+       specrich.g,
+       height = height,
+       width = height * asp_rat,
+       units = "in",
+       device = cairo_ps)
 
 
 # system('convert /home/ahill/Projects/together-bay-area/CUB-poster/img/species_richness.png -trim /home/ahill/Projects/together-bay-area/CUB-poster/img/species_richness.png')
@@ -303,7 +311,7 @@ sum.df <- read_csv("../together-bay-area/SDM-Report-1/data/sdm/sdm_sum.csv") %>%
 
 spec_tab.gt <- 
     sum.df %>% 
-    # select(-`Most Imp. Variables`) %>% 
+    select(-`Most Imp. Variables`) %>%
     gt(rowname_col = "Species") %>% 
     # tab_header(title = "Quick SDM metrics by species") %>%
     tab_style(
@@ -318,5 +326,5 @@ spec_tab.gt <-
 
 gtsave(spec_tab.gt,
        "img/species_table.tex")
-gtsave(spec_tab.gt,
-       "img/species_table.png", vwidth = 1500, vheight = 1200)
+# gtsave(spec_tab.gt,
+#        "img/species_table.png", vwidth = 1500, vheight = 1200)
