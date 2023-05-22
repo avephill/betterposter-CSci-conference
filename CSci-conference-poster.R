@@ -99,7 +99,7 @@ urbancln.g <-
     geom_sf(data = cln_cons.sf, aes(fill="darkgoldenrod1"), color = NA, alpha = .7) +
     geom_sf(data = urban.sf, aes(fill = "steelblue"), color = "steelblue", alpha = .3) +
     scale_fill_identity(breaks = c("darkgoldenrod1", "steelblue"), 
-                        labels = c("Regions of\nConservation\nValue", "Urban Lands"), 
+                        labels = c("Recognized\nConservation\nValue", "Urban Lands"), 
                         guide = "legend")+
     theme(legend.text = element_text(face = "bold", size = 28, color = text_color),
           legend.position = c(.2,.25),
@@ -109,7 +109,7 @@ urbancln.g <-
           # plot.margin = unit(-c(2,2,2,2), "in"),
           # panel.spacing = unit(c(4,4,4,4), "in"),
           # panel.spacing.x = unit(4, "in")
-          ) +
+    ) +
     ## important additional element
     guides(fill = guide_legend(byrow = TRUE))
 
@@ -251,7 +251,7 @@ specrich.g <- ggplot() +
                          high = "forestgreen",
                          midpoint = 10,
                          aesthetics = "fill",
-                         name = "Predicted\nSpecies Count") +
+                         name = "Estimated Count\nof Species\nwith Conservation Value") +
     # scale_color_gradient2(low = "white",
     #                      mid = "palegreen",
     #                      high = "forestgreen",
@@ -328,3 +328,57 @@ gtsave(spec_tab.gt,
        "img/species_table.tex")
 # gtsave(spec_tab.gt,
 #        "img/species_table.png", vwidth = 1500, vheight = 1200)
+
+
+# Predictors --------------------------------------------------------------
+
+spec.fp <- species.fp %>%
+    str_subset(input$species_name_map)
+
+varimp_tot.df <- 
+    map(full_dirs, function(fp){
+        
+        # Get spec name
+        fp_broken <- ( fp %>% str_split_1("/") )
+        spec_name <- fp_broken[length(fp_broken)] %>% str_replace("_", " ")
+        
+        # Read csv with Variable importances
+        varimp.df <- read_csv(paste0(fp, "/var_imp.csv"))
+        varimp_piece.df <- 
+            varimp.df %>% 
+            mutate(Species = spec_name)
+        return(varimp_piece.df)
+    }) %>% bind_rows()
+
+varimp_processed.df <- 
+    varimp_tot.df %>% 
+    select(-sd) %>% 
+    mutate(Variable = Variable %>% str_replace_all("_", " ")) %>% 
+    group_by(Variable) %>% 
+    summarise(mean = mean(Permutation_importance),
+              sd = sd(Permutation_importance)) %>% 
+    mutate(sd_hi = mean + sd,
+           sd_low = mean - sd) %>% 
+    mutate(sd_low = case_when(sd_low < 0 ~ 0, 
+                              T ~ sd_low)) %>% 
+    arrange(desc(mean))
+
+
+varimp.plot <- ggplot(varimp_processed.df, aes(fct_reorder(Variable, mean, .desc = F), 
+                                               mean)) +
+    geom_col(fill = "salmon2") +
+    # geom_errorbar(aes(ymin = sd_low, 
+    #                   ymax = sd_hi),
+    #               width = .2) +
+    labs(x = "", y = "") +
+    # labs(x = "", y = "Relative Variable Importance") +
+    
+    coord_flip() +
+    theme_minimal() +
+    theme(axis.text = element_text(size = 25),
+          axis.title.x = element_text(size = 32, face = "bold"))
+
+ggsave("img/predictor.png", varimp.plot, 
+       height = 10, width = 7.5, dpi = 300)
+
+
