@@ -98,9 +98,9 @@ bay_base.g +
     scale_fill_identity(breaks = c("darkgoldenrod1", "steelblue"), 
                         labels = c("Regions of\nConservation\nValue", "Urban Lands"), 
                         guide = "legend")+
-    theme(legend.text = element_text(face = "bold", size = 28
-                                     ),
+    theme(legend.text = element_text(face = "bold", size = 28, color = "white"),
           legend.position = c(.25,.25),
+          legend.spacing.y = unit(.5, 'in'),
           panel.border = element_rect(colour = "white", fill=NA, linewidth=5),
           legend.title = element_blank())
 
@@ -252,8 +252,11 @@ pal <- colorNumeric(trans_colors,
 #           panel.border = element_rect(colour = "white", fill = NA, linewidth = 5),
 #           legend.title = element_blank())
 
+specrich.sf <- specrich.strs %>% st_as_sf()
+
 specrich.g <- ggplot() +
-    geom_stars(data = specrich.strs, aes(fill = species_richness.tif)) +
+    # geom_stars(data = specrich.strs, aes(fill = species_richness.tif)) +
+    geom_sf(data = specrich.sf, aes(fill = species_richness.tif), color = NA) +
     geom_sf(data = urban.sf, aes(color = "white"), fill = NA) +
     scale_fill_gradient2(low = "white",
                          mid = "palegreen",
@@ -274,14 +277,23 @@ specrich.g <- ggplot() +
                          guide = "legend",
                          name = "") +
     theme_void() +
-    theme(legend.position="bottom") 
+    theme(legend.position=c(.2, .2),
+          legend.text = element_text(face = "bold")) 
+
+
+wid <- 7
+hei <- 10
+dev.new(width=wid, height=hei, unit="in")
+print(specrich.g)
+dev.off()
 
 ggsave("img/species_richness.png", specrich.g,
-       width = 18, height = 25, dpi = 800, units = "in")
+       width = 18, height = 25, dpi = 600, units = "in")
 
 ggsave("img/species_richness.eps", #width = 7.2, 
        specrich.g,
-       height = 5, 
+       height = hei,
+       width = wid,
        units = "in",
        device = cairo_ps)
 
