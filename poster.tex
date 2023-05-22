@@ -19,7 +19,7 @@
 
 %% Setting the width of columns
 % Left column
-% \setlength{\leftbarwidth}{0.25\paperwidth}
+% \setlength{\leftbarwidth}{0.22\paperwidth}
 % Right column
 %\setlength{\rightbarwidth}{0.25\paperwidth}
 
@@ -35,7 +35,7 @@
 
 %% Changing font sizes
 % Text font
-% \renewcommand{\fontsizestandard}{\fontsize{35}{35} \selectfont}
+\renewcommand{\fontsizestandard}{\fontsize{28}{50} \selectfont}
 % Main column font
 \renewcommand{\fontsizemain}{\fontsize{115}{150} \selectfont}
 % Title font
@@ -68,19 +68,32 @@
 
 \maincolumn{
 %%%% Main space
-\vspace{-2in}
+\vspace{-1in}
 \textbf{iNaturalist} data informs \\regional \textbf{conservation} strategy
 \vspace{2in}
 
+
+% \begin{figure}[!tbp]
+  \centering
+  \begin{minipage}[t]{0.3\textwidth}
+    \includegraphics[width=\textwidth]{img/urbancln.png}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[c]{0.6\textwidth}
+    \includegraphics[width=\textwidth]{img/species_richness.eps}
+  \end{minipage}
+% \end{figure}
 % \includegraphics[width=.3\textwidth]{img/urbancln.eps}
-\includegraphics[width=.3\textwidth]{img/urbancln.png}
-\includegraphics[width=.6\textwidth]{img/species_richness.eps}
+
+% \includegraphics[width=.3\textwidth]{img/urbancln.png}
+% \includegraphics[width=.6\textwidth]{img/species_richness.eps}
 % \\\textbf{Emphasize} the important words.
 \vfill
 }{
 %%%% Bottom space
 
 %% QR code
+% \vspace{-100cm}
 \qrcode{img/qr-code}{img/smartphoneWhite}{
 \textbf{Take a picture} to
 \\access the interactive report
@@ -99,6 +112,7 @@
 \author{Avery Hill$^1$, Tom Robinson$^2$, Rebecca Johnson$^1$, Alison Young$^1$}
 
 \institution{$^1$California Academy of Sciences}
+
 \institution{$^2$Together Bay Area}
 
 \section{Introduction}
