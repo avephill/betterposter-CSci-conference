@@ -174,12 +174,12 @@
 
 %% QR code
 \newcommand{\qrcode}[3]{
-\begin{minipage}[c]{0.30\textwidth}
+\begin{minipage}[c]{0.20\textwidth}
 \includegraphics[width=\textwidth]{#1}
 \end{minipage}%
 \begin{minipage}[c]{0.12\textwidth}
 \hfill
-\includegraphics[height=0.85\textwidth]{#2}
+\includegraphics[height=0.7\textwidth]{#2}
 \end{minipage}%
 \begin{minipage}[c]{0.50\textwidth}
 #3
