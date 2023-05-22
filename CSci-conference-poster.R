@@ -101,12 +101,15 @@ urbancln.g <-
                         guide = "legend")+
     theme(legend.text = element_text(face = "bold", size = 28, color = "white"),
           legend.position = c(.2,.25),
-          legend.spacing.y = unit(2, 'in'),
+          legend.spacing.y = unit(.25, 'in'),
           panel.border = element_rect(colour = "white", fill=NA, linewidth=5),
-          legend.title = element_blank()#,
-          # plot.margin = unit(c(2,2,2,2), "cm"),
-          # panel.spacing = unit(c(0,0,0,0), "cm")
-          )
+          legend.title = element_blank()#
+          # plot.margin = unit(-c(2,2,2,2), "in"),
+          # panel.spacing = unit(c(4,4,4,4), "in"),
+          # panel.spacing.x = unit(4, "in")
+          ) +
+    ## important additional element
+    guides(fill = guide_legend(byrow = TRUE))
 
 
 ggsave("img/urbancln.png", urbancln.g, dpi = 300, width = 10, height = 10)
@@ -237,8 +240,8 @@ trans_colors <- colorRampPalette(
 specrich.sf <- specrich.strs %>% st_as_sf()
 
 specrich.g <- ggplot() +
-    # geom_stars(data = specrich.strs, aes(fill = species_richness.tif)) +
-    geom_sf(data = specrich.sf, aes(fill = species_richness.tif), color = NA) +
+    geom_stars(data = specrich.strs, aes(fill = species_richness.tif)) +
+    # geom_sf(data = specrich.sf, aes(fill = species_richness.tif, color = species_richness.tif)) +
     geom_sf(data = urban.sf, aes(color = "white"), fill = NA) +
     scale_fill_gradient2(low = "white",
                          mid = "palegreen",
@@ -246,21 +249,16 @@ specrich.g <- ggplot() +
                          midpoint = 10,
                          aesthetics = "fill",
                          name = "Predicted\nSpecies Count") +
-    # scale_fill_steps(
-    #     low = "#132B43",
-    #     high = "#56B1F7",
-    #     space = "Lab",
-    #     na.value = "grey50",
-    #     guide = "coloursteps",
-    #     aesthetics = "fill"
-    # ) +
+
     scale_color_identity(breaks = c("white"),
                          labels = c("Urban Lands"),
                          guide = "legend",
                          name = "") +
     theme_void() +
     theme(legend.position=c(.2, .3),
-          legend.text = element_text(face = "bold")) 
+          legend.text = element_text(face = "bold", size = 28, color = "white"),
+          legend.title = element_text(size = 32, face = "bold"),
+          legend.key.size = unit(3, "line")) 
 
 
 # wid <- 7
@@ -269,8 +267,11 @@ specrich.g <- ggplot() +
 # print(specrich.g)
 # dev.off()
 
+asp_rat <- .947
+height <- 20
+
 ggsave("img/species_richness.png", specrich.g,
-       width = 15, height = 20, dpi = 300, units = "in")
+       width = height * asp_rat, height = height, dpi = 300, units = "in")
 
 # ggsave("img/species_richness.eps", #width = 7.2, 
 #        specrich.g,
