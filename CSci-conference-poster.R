@@ -278,7 +278,9 @@ specrich.g <- ggplot() +
 ggsave("img/species_richness.png", specrich.g,
        width = 18, height = 25, dpi = 800, units = "in")
 
-ggsave("img/species_richness.eps", device = cairo_ps)
+ggsave("img/species_richness.eps", width = 18, height = 25, 
+       units = "in",
+       device = cairo_ps)
 
 
 # system('convert /home/ahill/Projects/together-bay-area/CUB-poster/img/species_richness.png -trim /home/ahill/Projects/together-bay-area/CUB-poster/img/species_richness.png')
