@@ -12,6 +12,7 @@
 \usepackage{amsmath, booktabs, caption, longtable}
 
 \usepackage{fontawesome}
+\usepackage{xcolor}
 
 % For custom lists
 \renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}}
@@ -53,14 +54,14 @@
 %% Changing font sizes for a specific text segment
 % Place the text inside brackets:
 % {\fontsize{28}{35} \selectfont Your text goes here}
-
+\definecolor{Mycolor2}{HTML}{C17C74}
 %% Changing colours
 % Background of side columns
 %\renewcommand{\columnbackgroundcolor}{black}
 % Font of side columns
 %\renewcommand{\columnfontcolor}{gray}
 % Background of main column
-%\renewcommand{\maincolumnbackgroundcolor}{empirical}
+\renewcommand{\maincolumnbackgroundcolor}{Mycolor2}
 %\renewcommand{\maincolumnbackgroundcolor}{theory}
 %\renewcommand{\maincolumnbackgroundcolor}{methods}
 %\renewcommand{\maincolumnbackgroundcolor}{intervention}
@@ -181,7 +182,7 @@
 %%%%%%%% RIGHT COLUMN
 \section{Results}
 
-Species with SDM Accuracy Metrics
+\textbf{Species with SDM Accuracy Metrics}
 \begingroup % localize the following settings                                                                    
 % \setlength\tabcolsep{2pt}
 % \footnotesize
@@ -195,7 +196,10 @@ Species with SDM Accuracy Metrics
 \input{img/species_table} 
 \endgroup
 Predictor Table
-\includegraphics[\textwidth]{img/predictor.png}
+\begin{center}
+    \includegraphics[width = \textwidth]{img/predictor.png}
+\end{center}
+
 
 \section{Discussion}
 
