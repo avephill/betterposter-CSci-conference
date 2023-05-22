@@ -94,11 +94,14 @@ bay_base.g <-
 
 text_color <- "white"
 
+cln_color <- "#B1D8B7"
+urb_color <- "#6C91C2"
+
 urbancln.g <- 
     bay_base.g + 
-    geom_sf(data = cln_cons.sf, aes(fill="darkgoldenrod1"), color = NA, alpha = .7) +
-    geom_sf(data = urban.sf, aes(fill = "steelblue"), color = "steelblue", alpha = .3) +
-    scale_fill_identity(breaks = c("darkgoldenrod1", "steelblue"), 
+    geom_sf(data = cln_cons.sf, aes(fill=cln_color), color = NA, alpha = .7) +
+    geom_sf(data = urban.sf, aes(fill = urb_color), color = urb_color, alpha = .3) +
+    scale_fill_identity(breaks = c(cln_color, urb_color), 
                         labels = c("Recognized\nConservation\nValue", "Urban Lands"), 
                         guide = "legend")+
     theme(legend.text = element_text(face = "bold", size = 28, color = text_color),
@@ -245,20 +248,14 @@ specrich.g <- ggplot() +
     # geom_stars(data = specrich.strs, aes(fill = species_richness.tif)) +
     geom_sf(data = specrich.sf, aes(fill = species_richness.tif), 
             color = NA, lwd = 0) +
-    geom_sf(data = urban.sf, aes(color = "white"), fill = NA) +
-    scale_fill_gradient2(low = "white",
-                         mid = "palegreen",
-                         high = "forestgreen",
-                         midpoint = 10,
+    geom_sf(data = urban.sf, aes(color = "white"), fill = NA, lwd = 4) +
+    scale_fill_gradient(low = "#FFEAEE",
+                         # mid = "palegreen",
+                         high = "2F5233",
+                         # midpoint = 10,
                          aesthetics = "fill",
-                         name = "Estimated Count\nof Species\nwith Conservation Value") +
-    # scale_color_gradient2(low = "white",
-    #                      mid = "palegreen",
-    #                      high = "forestgreen",
-    #                      midpoint = 10,
-    #                      aesthetics = "fill",
-    #                      name = "Predicted\nSpecies Count") +
-    scale_color_identity(breaks = c("white"),
+                         name = "Estimated Count\nof Species with\nConservation Value") +
+    scale_color_identity(breaks = c("#6C91C2"),
                          labels = c("Urban Lands"),
                          guide = "legend",
                          name = "") +
@@ -266,7 +263,9 @@ specrich.g <- ggplot() +
     theme(legend.position=c(.2, .3),
           legend.text = element_text(face = "bold", size = 28, color = text_color),
           legend.title = element_text(size = 32, face = "bold", color = text_color),
-          legend.key.size = unit(3, "line")) 
+          legend.key.size = unit(3, "line"),
+          legend.spacing.y = unit(2, "cm")) +
+    guides(fill = guide_legend(byrow = TRUE))
 
 
 # wid <- 7
@@ -366,7 +365,7 @@ varimp_processed.df <-
 
 varimp.plot <- ggplot(varimp_processed.df, aes(fct_reorder(Variable, mean, .desc = F), 
                                                mean)) +
-    geom_col(fill = "salmon2") +
+    geom_col(fill = "#6C91C2") +
     # geom_errorbar(aes(ymin = sd_low, 
     #                   ymax = sd_hi),
     #               width = .2) +
@@ -375,8 +374,10 @@ varimp.plot <- ggplot(varimp_processed.df, aes(fct_reorder(Variable, mean, .desc
     
     coord_flip() +
     theme_minimal() +
-    theme(axis.text = element_text(size = 25),
-          axis.title.x = element_text(size = 32, face = "bold"))
+    theme(axis.text.y = element_text(size = 15, face = "bold"),
+          # axis.title.x = element_text(size = 20, face = "bold")
+          axis.text.x = element_text(size = 18, face = "bold")
+          )
 
 ggsave("img/predictor.png", varimp.plot, 
        height = 10, width = 7.5, dpi = 300)
