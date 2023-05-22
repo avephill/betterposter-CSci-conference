@@ -92,20 +92,24 @@ bay_base.g <-
 
 # ggsave("../results/figures/baybase2.png",dpi = 300, width = 8, height = 8)
 
-bay_base.g + 
+urbancln.g <- 
+    bay_base.g + 
     geom_sf(data = cln_cons.sf, aes(fill="darkgoldenrod1"), color = NA, alpha = .7) +
     geom_sf(data = urban.sf, aes(fill = "steelblue"), color = "steelblue", alpha = .3) +
     scale_fill_identity(breaks = c("darkgoldenrod1", "steelblue"), 
                         labels = c("Regions of\nConservation\nValue", "Urban Lands"), 
                         guide = "legend")+
     theme(legend.text = element_text(face = "bold", size = 28, color = "white"),
-          legend.position = c(.25,.25),
-          legend.spacing.y = unit(.5, 'in'),
+          legend.position = c(.2,.25),
+          legend.spacing.y = unit(2, 'in'),
           panel.border = element_rect(colour = "white", fill=NA, linewidth=5),
-          legend.title = element_blank())
+          legend.title = element_blank()#,
+          # plot.margin = unit(c(2,2,2,2), "cm"),
+          # panel.spacing = unit(c(0,0,0,0), "cm")
+          )
 
 
-ggsave("img/urbancln.png", dpi = 300, width = 10, height = 10)
+ggsave("img/urbancln.png", urbancln.g, dpi = 300, width = 10, height = 10)
 # ggsave("img/urbancln.eps", dpi = 300, width = 8, height = 8, device = cairo_ps)
 
 
@@ -228,29 +232,7 @@ trans_colors <- colorRampPalette(
     # colors = c("chartreuse","midnightblue")
 )(30)
 
-pal <- colorNumeric(trans_colors,
-                    domain = range(pred_values),
-                    na.color = "#00000000")
-# 
-#     addStarsImage(colors = trans_colors) %>%
-#     addLegend("bottomright", pal = pal,
-#               # values = seq(1,0, by = -.1) ,
-#               values = seq(0,1, by = .1) ,
-#               title = "Habitat Suitability",
-#               opacity = 1) %>% 
 
-# bay_base.g +
-# ggplot() +
-#     geom_stars(data = specrich.strs) +
-#     # geom_sf(data = cln_cons.sf, aes(color = "darkgoldenrod1"), fill = NA) +
-#     geom_sf(data = urban.sf, aes(color = "white"), fill = NA) +
-#     scale_color_identity(breaks = c("darkgoldenrod1", "steelblue"), 
-#                          labels = c("Regions of \nConservation Value", "Urban Lands"), 
-#                          guide = "legend")+
-#     theme(legend.text = element_text(face = "bold", size = 32),
-#           legend.position = c(.25,.25),
-#           panel.border = element_rect(colour = "white", fill = NA, linewidth = 5),
-#           legend.title = element_blank())
 
 specrich.sf <- specrich.strs %>% st_as_sf()
 
@@ -263,7 +245,7 @@ specrich.g <- ggplot() +
                          high = "forestgreen",
                          midpoint = 10,
                          aesthetics = "fill",
-                         name = "Predicted Species Richness") +
+                         name = "Predicted\nSpecies Count") +
     # scale_fill_steps(
     #     low = "#132B43",
     #     high = "#56B1F7",
@@ -277,25 +259,25 @@ specrich.g <- ggplot() +
                          guide = "legend",
                          name = "") +
     theme_void() +
-    theme(legend.position=c(.2, .2),
+    theme(legend.position=c(.2, .3),
           legend.text = element_text(face = "bold")) 
 
 
-wid <- 7
-hei <- 10
-dev.new(width=wid, height=hei, unit="in")
-print(specrich.g)
-dev.off()
+# wid <- 7
+# hei <- 10
+# dev.new(width=wid, height=hei, unit="in")
+# print(specrich.g)
+# dev.off()
 
 ggsave("img/species_richness.png", specrich.g,
-       width = 18, height = 25, dpi = 600, units = "in")
+       width = 15, height = 20, dpi = 300, units = "in")
 
-ggsave("img/species_richness.eps", #width = 7.2, 
-       specrich.g,
-       height = hei,
-       width = wid,
-       units = "in",
-       device = cairo_ps)
+# ggsave("img/species_richness.eps", #width = 7.2, 
+#        specrich.g,
+#        height = hei,
+#        width = wid,
+#        units = "in",
+#        device = cairo_ps)
 
 
 # system('convert /home/ahill/Projects/together-bay-area/CUB-poster/img/species_richness.png -trim /home/ahill/Projects/together-bay-area/CUB-poster/img/species_richness.png')
